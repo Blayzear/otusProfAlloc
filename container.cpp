@@ -30,7 +30,7 @@ public:
         return m_size;
     };
     bool empty() {
-        begin() == end() ? return true : return false;
+        return begin() == end();
     };
     MyContainer() {
         reserve(default_capacity);

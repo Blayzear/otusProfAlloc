@@ -39,7 +39,7 @@ struct MyAllocator : std::allocator<T>
 	template <typename... Args>
 	void construct(T* p, Args &&...args) {
 		new ((void*)p) T(std::forward<Args>(args)...);
-	};
+	}
 
 	void destroy(T* p) {
 		p->~T();
