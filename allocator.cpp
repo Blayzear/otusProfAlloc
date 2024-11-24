@@ -28,15 +28,19 @@ struct MyAllocator : std::allocator<T>
 	}
 
 	void deallocate(T* p, std::size_t n) {
-		std::free(p);
+		//crutch-cond copypaste since for std::allocator->deallocate() n is obligatory 
+		// and cicd crashes on unused parameter
+		if (p != nullptr || n == 0) 
+		{
+			std::free(p);
+		}
 	}
 
-	template <typename T, typename... Args>
+	template <typename... Args>
 	void construct(T* p, Args &&...args) {
-		new ((void*)p) T(std::forward<Args>(args)...);;
+		new ((void*)p) T(std::forward<Args>(args)...);
 	};
 
-	template <typename T>
 	void destroy(T* p) {
 		p->~T();
 	}
