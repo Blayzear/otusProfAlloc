@@ -10,6 +10,8 @@ struct MyAllocator : std::allocator<T>
 	using reference = T&;
 	using const_reference = const T&;
 
+	const size_t reserve_amount = 100;
+
 	template <typename U>
 	struct rebind {
 		using other = MyAllocator<U>;
@@ -22,7 +24,7 @@ struct MyAllocator : std::allocator<T>
 	MyAllocator(const MyAllocator<U>&) {}
 
 	T* allocate(std::size_t n) {
-		auto p = std::malloc(n * sizeof(T));
+		auto p = std::malloc(n * sizeof(T) * reserve_amount);
 		if (!p)
 			throw std::bad_alloc();
 		return reinterpret_cast<T*>(p);
